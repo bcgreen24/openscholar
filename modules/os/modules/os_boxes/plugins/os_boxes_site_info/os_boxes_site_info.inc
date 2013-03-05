@@ -106,6 +106,8 @@ class os_boxes_site_info extends os_boxes_default {
     <p>'.filter_xss($this->options['address1']).'<br>'.filter_xss($this->options['address2']).'
     '.(user_is_logged_in() || isset($annon_contact)?l('(email)', 'contact_owner'):'').'</p>';
 
+    $output .= flag_create_link('subscribe_og', $vsite->id);
+
     $block['content'] = $output;
     return $block;
   }
