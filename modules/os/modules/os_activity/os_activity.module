@@ -116,7 +116,7 @@ function os_activity_views_pre_render(&$view) {
  */
 function os_activity_register_message(Message $message = NULL) {
   $cache = &drupal_static(__FUNCTION__, array());
-  if (empty($message)) {
+  if (empty($message->mid)) {
     return $cache;
   }
 

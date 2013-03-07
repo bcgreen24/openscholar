@@ -6,8 +6,25 @@
  */
 
 /**
- * Enable the "Message-subscribe" module.
+ * Implements hook_install().
+ */
+function os_activity_install() {
+  _os_activity_enable_flag();
+}
+
+/**
+ * Enable Message-subscribe's flag.
+ */
+function _os_activity_enable_flag() {
+  $flag = flag_load('subscribe_og', TRUE);
+  $flag->enable();
+  $flag->save();
+}
+
+/**
+ * Enable the "Message-subscribe" module and the needed flags.
  */
 function os_activity_update_7000() {
   module_enable(array('message_subscribe'));
+  _os_activity_enable_flag();
 }
