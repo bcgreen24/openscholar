@@ -79,18 +79,6 @@ function hwpi_basetheme_node_view_alter(&$build) {
       $title_field[0] = array('#markup' => implode($glue, $titles));
     }
 
-    //join titles
-    $title_field = &$build['field_professional_title'];
-    if ($title_field) {
-      $keys = array_filter(array_keys($title_field), 'is_numeric');
-      foreach ($keys as $key) {
-        $titles[] = $title_field[$key]['#markup'];
-        unset($title_field[$key]);
-      }
-      $glue = ($build['#view_mode'] == 'sidebar_teaser') ? ', ' : "<br />\n";
-      $title_field[0] = array('#markup' => implode($glue, $titles));
-    }
-
     // We dont want the other fields on teasers
     if ($build['#view_mode'] == 'teaser') {
 
@@ -105,10 +93,15 @@ function hwpi_basetheme_node_view_alter(&$build) {
       }
 
       //hide the rest
-      foreach (array('field_address', 'field_email', 'field_phone') as $field) {
+      foreach (array('field_address') as $field) {
         if (isset($build[$field])) {
           unset($build[$field]);
         }
+      }
+
+      if (isset($build['field_email'])) {
+        $email_plain = $build['field_email'][0]['#markup'];
+        $build['field_email'][0]['#markup'] = '<a href="mailto:' . $email_plain . '">' . $email_plain . '</a>';
       }
 
       //newlines after website
