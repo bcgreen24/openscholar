@@ -200,6 +200,7 @@ function os_activity_message_node_create($node, $op) {
     $is_private = TRUE;
   }
 
+  // Send the to message-subscribe for processing. Message will also be saved.
   $wrapper->field_private_message->set($is_private);
-  $wrapper->save();
+  message_subscribe_process_message('node', $node, $message);
 }

@@ -1,0 +1,13 @@
+<?php
+
+/**
+ * @file
+ * OS Activity install module.
+ */
+
+/**
+ * Enable the "Message-subscribe" module.
+ */
+function os_activity_update_7000() {
+  module_enable(array('message_subscribe'));
+}

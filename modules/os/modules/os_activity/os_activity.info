@@ -10,6 +10,7 @@ dependencies[] = entityreference
 dependencies[] = features
 dependencies[] = list
 dependencies[] = message
+dependencies[] = message_subscribe
 dependencies[] = views
 dependencies[] = vsite
 features[ctools][] = views:views_default:3.0
