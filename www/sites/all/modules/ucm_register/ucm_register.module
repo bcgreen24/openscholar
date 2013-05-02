@@ -1,259 +1,138 @@
 <?php
+/**
+ * @file vsite_register.module
+ *
+ * Provides form so users can create vsites
+ */
 
 /**
- * Implemenation of hook_menu()
- * @return unknown
+ * Implements hook_menu
  */
-function ucm_register_menu(){
-     $items = array();
-    $items['site/register'] = array(
+function vsite_register_menu() {
+  $items['site/register'] = array(
     'title' => 'Create your web site',
-    'page callback' => 'ucm_register_form_process',
-    'file' => 'ucm_register.pages.inc',
-    'access callback' => 'ucm_register_access_registration',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('vsite_register_form'),
+    'access callback' => 'vsite_vsite_exists_access',
+    'file' => 'vsite_register.form.inc',
   );
 
-  $items['switch-site'] = array( 
-    'title' => 'Switch site',
-    'page callback' => 'ucm_register_site_switch_process',
-    'file' => 'ucm_register.pages.inc',
-    'access callback' => 'ucm_register_access_site_switch',
+  $items['admin/config/openscholar/vsite_register'] = array(
+    'title' => 'Vsite Registration',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('vsite_register_admin_form'),
+    'file' => 'vsite_register.admin.inc',
+    'access arguments' => array('access administration pages'),
+    //'type' => MENU_LOCAL_TASK,
   );
 
   return $items;
 }
 
-/**
- * Implementation of hook_perm()
- */
-function ucm_register_perm() {
-  return array('create sites');
-}
 
 /**
- * Scholar register form access
- *@return boolean
+ * Implements hook_block_info
  */
-function ucm_register_access_registration() {
-  
-  global $user;
-  $user_access = user_access('create sites');
-  $own_site = vsite_get_vsite_by_owner($user->uid);
-  $access = (($user_access && !$own_site) || $user->uid == 0);
-  
-  if ($access) {
-    return TRUE;
-  }
-  
-  if ($_GET['q'] == 'site/register') {
-    if ($own_site) {
-      // grad student has a site.
-      drupal_goto($user->name . '/home');
-    }
-  }
-  
-  return FALSE;
-}
-
-function ucm_register_access_site_switch() {
-  global $user;
-  if (vsite_get_vsite_by_owner($user->uid)) {
-    return TRUE;
-  }
-  return FALSE;
-}
-
-function ucm_register_init() {
-  drupal_add_js(drupal_get_path('module', 'ucm_register') . '/ucm_register.js');
-}
-
-/**
- * Implementation of hook_user
- */
-function ucm_register_user($op, &$edit, &$account, $category = NULL) {
-  switch ($op) {
-    case 'login':
-      if ( $account->uid ) {
-          drupal_goto('<front>');
-      }  
-      if ($account->uid != 1 && !(in_array('scholar user', $account->roles) || in_array('administrator', $account->roles))) {
-        unset($_SESSION['destination']);
-        session_destroy();
-        $account = drupal_anonymous_user();
-        drupal_goto('', NULL, 'noaccess');
-      }
-      elseif (vsite_get_vsite_by_owner($account->uid) && $_GET['q'] != 'switch-site') {
-        drupal_goto($account->name);
-      }
-      elseif (arg(0) == 'cas') {
-        $new_path = str_replace('cas/', '', $_GET['q']);
-        if ($new_path == 'cas') {
-          $new_path = '<front>';
-        }
-        drupal_goto($new_path);
-      }
-      else {
-        drupal_goto($_GET['q']);
-      }
-  }
-}
-
-/**
- * Determine whether to redirect user or load form when trying to access registration form
- */
-function ucm_register_form_process(){
-  global $user;
-
-  //check if user should be re-directed somewhere
-  
-  if ($vsites = vsite_get_vsite_by_owner($user->uid)){
-    if (!ucm_register_vsite_exists_access($vsites)){
-      return drupal_goto(_ucm_register_get_redirect($vsites));  //redirect user away from the form
-    }
-  }
-  return drupal_get_form('ucm_register_signup_form'); //load the form
-}
-
-/**
- * Determine whether to redirect user or load form when trying to access registration form
- */
-function ucm_register_site_switch_process() {
-  return drupal_get_form('ucm_register_site_switch_form'); //load the form
-}
-
-/**
- * Handles access rules for when site owner is attempting to create a another site
- * @return  boolean
- */
-function ucm_register_vsite_exists_access($vsites = array()){
-  //user owns one site
-  if (count($vsites) == 1) {
-    return false;
-  }
-  
-  return true;
-}
-
-/**
- * Private function - Provides redirect path and message for certain regstration form access conditions
- * @param  $vsites array created from vsite_get_vsite_by_owner() 
- */
-function _ucm_register_get_redirect($vsites = array()){
-  switch (count($vsites)){
-    case 0:
-      //This should not happen unless $vsites was not passed properly or is empty array
-      error_log('ucm_register_get_redirect() was called with an empty array as the first argument');
-      return null;
-      break;
-
-    default:
-      global $base_url;  
-      drupal_set_message(t('You already have a registered web site.' . l(' Go there now.', $vsites[0] ->get_absolute_url())));
-      return $base_url;
-      break;
-  }
-}
-
-function ucm_register_notify_user($vsite, $user){
-  global $language;
-  $params = array();
-  $from = variable_get('site_mail', ini_get('sendmail_from'));
-
-     //add vsite and user object
-   $params['vsite'] = $vsite;
-   $params['user'] = $user;
-   $params['subject'] = t("A Scholars' Web Site has been created for you", array(
-    '!site_name' => variable_get('site_name', 'Scholar\'s Web Sites Project')
-  ));
-
-  $scholar_site_url =  $site_url = url("node/" . $vsite -> sid, $options = array('absolute' => TRUE));
-  $timestamp = time();
-  
-  $msg_variables = array(
-    '!username' => $user->name,
-    '!site' => variable_get('site_name', "Scholars' Web Sites Project"),
-    '!scholar_site_url' => $scholar_site_url,
-    '!login_url' => user_pass_reset_url($user),
-    '!site_login_uri' => url($vsite -> purl . '/home', array('absolute' => TRUE)), 
-    '!uri' => $base_url,
-    '!uri_brief' => preg_replace('!^https?://!', '', $base_url),
-    '!mailto' => $user->mail,
-    '!date' => format_date(time(), 'medium', '', NULL, $message['language']->language),
-    '!login_uri' => url('user', array(
-      'absolute' => TRUE,
-      'language' => $message['language']
-    )),
-    '!site_url' => url('node/' . $vsite->sid),
-    '!edit_uri' => url('user/' . $user->uid . '/edit', array(
-      'absolute' => TRUE,
-      'language' => $message['language']
-    )),
-    '!scholar_edit_url' => url($vsite -> purl . "/cp/users/myaccount", array('absolute' => TRUE)),
-    '!password' => $password
+function vsite_register_block_info() {
+  return array(
+    'get_your_site_block' => array('info' => t('Vsite Registration'),'status' => 0),
   );
-  
-  //detemine if user is creating first site or additional site, send appropriate message
-  $body = (count(vsite_get_vsite_by_owner($user -> uid)) > 1) ?
-  
-   t("Hi !username,\n\nYour new web site at !site has been activated. Your web site url is !scholar_site_url\n\nYou will be able to log into your site at !site_login_uri\n\nWe hope you will enjoy your new web site.\n\nSincerely,\nThe !site Team", $msg_variables)  
-   :
-  t("Hi !username,\n\nYour new web site at !site has been activated. Your web site url is !scholar_site_url\n\nYou will be able to log into your site at !site_login_uri\n\nWe hope you will enjoy your new web site.\n\nSincerely,\nThe !site Team", $msg_variables);
-
-  $params['body'] = $body;
-  if (! drupal_mail('ucm_register', 'ucm-register-notify', $user->mail, $language, $params, $from)) {
-    drupal_set_message(t('Error sending notification mail to user.'), 'error');
-  }
 }
 
 /**
- * Implementation of hook_mail()
+ * Implements hook_block_view
  */
-function ucm_register_mail($key, &$message, $params) {
-  $message['subject'] = $params['subject'];
-  $message['body'] = $params['body'];
-  
-  //these values be used with any mail alter hooks
- $message['vsite'] = $params['vsite'];
- $message['user'] = $params['user'];
+function vsite_register_block_view($delta = '') {
+  global $user;
+  if(user_is_logged_in()) {
+  	$vsites = vsite_get_vsite_by_owner($user->uid);
+  }
+  $block = array();
+  ctools_include('vsite','vsite');
+
+  switch ($delta) {
+    case 'get_your_site_block':
+      if (vsite_vsite_exists_access()) {
+        $content = l(t('Create your site'), 'site/register', array());
+
+      } elseif (isset($vsites) && user_is_logged_in()) {
+        if (count($vsites) > 1) {
+          $content = l(t('Go to your sites'), 'user');
+        } else {
+          $content = l(t('Go to your site'), $vsites[0]->og->purl);
+        }
+      }
+
+    break;
+  }
+
+  if (isset($content)) {
+    $block['content'] = array(
+    	'content' => array('#markup' => $content),
+    );
+  }
+
+  return $block;
+}
+
+
+/**
+ * Implements hook_theme
+ *
+ * Provides theming for form errors
+ */
+function vsite_register_theme() {
+  $theme = array();
+  $theme['vsite_register_form_errors'] = array(
+    'render element' => 'form',
+    'function' => 'theme_vsite_register_form_errors',
+    'variables' => array('name'=>NULL, 'errors'=>array()),
+  );
+  return $theme;
+}
+
+function theme_vsite_register_form_errors($vars) {
+  $list = theme('item_list', array('items'=>$vars['errors'], 'type'=>'ul', 'attributes'=>array('class'=>array('error'))));
+  return '<div id="' . $vars['name'] . '-errors">' . $list . '</div>';
 }
 
 /**
- * Implementation of hook_ucm_register_message()
+ * Implementation of hook_vsite_regsiter_message()
  * @return the message shown after a successful  web site registration
  */
-function ucm_register_message($form, $domain){
+function vsite_register_message($form, $domain){
   global $user, $base_url;
-    
-  $message  = '<div id="success-message">';
-  $message .= '<p>Success! your new site has been created.</p>';
+
+  $word_replace = user_access("create openscholar site on behalf of others") ? 'the' : 'your';
+
+  $message  = '<div id="success-message" class="status">';
+  $message .= '<p>Success! ' . ucfirst($word_replace) . ' new site has been created.</p>';
+
+  if (in_array('anonymous user', $user -> roles)){
+    $message .= '<p>Check your email account for further details on how to login in to start adding features and content.</p>';
+  }
+
+  $message .= '<p>The url of ' . $word_replace . ' site is ' . $base_url . '/' . $domain . ' ' . l(t("Go there now"), $base_url . '/' . $domain) . '</p>';
   $message .= '</div>';
-  
+
   //give other modules a chance to alter message
-  module_invoke_all('ucm_register_message',  $message, $form, $domain);   
+  module_invoke_all('vsite_register_message',  $message, $form, $domain);
   return $message;
 }
 
-// Return a list of items that need to be processed.
-function ucm_register_items_need_process() {
-  $query = "SELECT name, status FROM {vsite_managed} WHERE process = 1";
-  $result = db_query($query);
-  $names = array();
-  while ($item = db_fetch_array($result)) {
-    $items[] = $item;
+function _vsite_register_form_error(){
+  return ajax_command_html('#submit-suffix', 'The web site cannot be created. Please fix the errors and try again.');
+}
+
+/**
+ * Implements hook_fork_BASE_FORM_ID_alter()
+ * Alter the vsite_register_form to remove the notify element
+ * if the user is not logged in.
+ */
+function vsite_register_form_vsite_register_form_alter(&$form, &$form_state) {
+  if(!user_is_logged_in()) {
+  	if(isset($form['notify'])) {
+  		$form['notify']['#access'] = FALSE;
+  	}
   }
-  
-  return $items;
 }
-
-function ucm_register_mark_processed($name) {
-  $process = 0;
-  db_query("UPDATE {vsite_managed} SET `process` = %d WHERE `name` = '%s'", $process, $name);
-}
-
-// Get current hosting status of site
-function ucm_register_get_status($name) {
-  $query = "SELECT status FROM {vsite_managed} WHERE name = '%s'";
-  $result = db_query($query, $name);
-  return db_result($result);
-}
-
