@@ -10,14 +10,3 @@
 
 # Dont's track coder module backups
 *.coder.orig
-
-#behat
-openscholar/behat/vendor
-openscholar/behat/bin
-openscholar/behat.local.yml
-composer.phar
-
-#make
-openscholar/1/
-openscholar/libraries/
-openscholar/modules/contrib/

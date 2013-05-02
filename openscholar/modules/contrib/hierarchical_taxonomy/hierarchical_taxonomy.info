@@ -1,0 +1,11 @@
+name = Hierarchical taxonomy
+description = "API module to provide a hierarchically-structured taxonomy_get_tree function.."
+core = 7.x
+dependencies[] = taxonomy
+
+
+; Information added by drush on 2013-05-01
+version = ""
+project = "hierarchical_taxonomy"
+datestamp = "1367453310"
+
