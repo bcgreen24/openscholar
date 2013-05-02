@@ -73,7 +73,7 @@ function ucm_register_signup_form_submit($form, &$form_state) {
   $mail  = $user->mail;
   $use_openscholar = $form_state['values']['site_type'];
   
-  install_include(array('user'));
+  //install_include(array('user'));
   
   if ($use_openscholar) {
     ucm_register_set_manage($domain, 1, 1);
