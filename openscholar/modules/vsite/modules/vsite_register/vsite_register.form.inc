@@ -292,6 +292,8 @@ function _vsite_register_user_form() {
  * Creates user and vsite when site/register form is submitted
  */
 function vsite_register_form_submit(&$form, &$state) {
+  var_dump($form);
+  die("<br/>Form Contents");
   ctools_include('user', 'os');
   ctools_include('vsite', 'vsite');
   $values = $state['values'];
