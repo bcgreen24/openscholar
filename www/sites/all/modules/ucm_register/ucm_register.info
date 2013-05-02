@@ -1,0 +1,4 @@
+name = ucm register
+description = provide registration functionality for scholar
+core = 6.x
+package = UC Merced

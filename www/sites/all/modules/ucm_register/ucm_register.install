@@ -1,0 +1,38 @@
+<?php
+  function ucm_register_schema() {
+    $schema = array();
+
+    $schema['vsite_managed'] = array(
+      'description' => t('This keeps track of sites that are not managed by scholar'),
+      'fields' => array(
+        'name' => array(
+          'description' => t('Name of the site.'),
+          'type' => 'varchar',
+          'length' => 255,
+          'not null' => true,
+        ),
+        'status' => array(
+          'description' => t('If site is managed or not.'),
+          'type' => 'int',
+          'default' => 1,
+          'not null' => true,
+        ),
+        'process' => array(
+          'description' => t('Tells the processing script if this site needs to get processed.'),
+          'type' => 'int',
+          'default' => 1,
+          'not null' => true,
+        ),
+      ),
+    );
+
+    return $schema;
+  }
+
+  function ucm_register_install() {
+    drupal_install_schema('ucm_register');
+  }
+
+  function ucm_register_uninstall() {
+    drupal_uninstall_schema('ucm_register');
+  }
