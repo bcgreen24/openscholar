@@ -16,159 +16,207 @@ function vsite_register_form($form, &$state) {
   if (isset($_GET['parent']) && $parent = vsite_get_vsite($_GET['parent'])) {
     $parent = $_GET['parent'];
   }
-  $form['parent'] = array(
-    '#type' => 'hidden',
-    '#value' => $parent,
-  );
-
-  $form['domain'] = array(
-    '#type' => 'textfield',
-    '#title' => t('Your URL'),
-    '#required' => TRUE,
-    '#field_prefix' => $base_url . '/',
-    '#size' => 35,
-    '#description' => t('Minimum of 3 characters, which must be lowercase. Punctuation is not allowed except for hyphens and underscores. <br />Example: a choice of \'jdoe\' would result in the URL: %site.', array('%site' => $base_url . '/jdoe')),
-    '#ajax' => array(
-      'callback' => 'vsite_register_ajax_validation',
-      'wrapper' => 'domain-errors',
+//  $form['parent'] = array(
+//    '#type' => 'hidden',
+//    '#value' => $parent,
+//  );
+//
+//  $form['domain'] = array(
+//    '#type' => 'textfield',
+//    '#title' => t('Your URL'),
+//    '#required' => TRUE,
+//    '#field_prefix' => $base_url . '/',
+//    '#size' => 35,
+//    '#description' => t('Minimum of 3 characters, which must be lowercase. Punctuation is not allowed except for hyphens and underscores. <br />Example: a choice of \'jdoe\' would result in the URL: %site.', array('%site' => $base_url . '/jdoe')),
+//    '#ajax' => array(
+//      'callback' => 'vsite_register_ajax_validation',
+//      'wrapper' => 'domain-errors',
+//    ),
+//    '#field_suffix' => theme('vsite_register_form_errors', array('name'=>'domain')),
+//    '#attached' => array('js' => array(drupal_get_path('module', 'vsite_register') . '/vsite_register.js')),
+//  );
+//
+//  $group_types = og_get_all_group_bundle();
+//  $default_bundle = variable_get('os_default_group_bundle', 'personal');
+//  $bundles = array();
+//  foreach ($group_types['node'] as $bundle => $label) {
+//    if (user_access("create {$bundle} content") && (!isset($parent) || in_array($bundle, variable_get('subsite_bundles',array('personal', 'project'))))) {
+//      $bundles[$bundle] = $label;
+//    }
+//  }
+//  if(!isset($bundles[$default_bundle])){
+//    $default_bundle = current($bundles);
+//  }
+//
+//  $form['bundle'] = array(
+//    '#title' => t('Type of site'),
+//    '#type' => 'select',
+//    '#required' => TRUE,
+//    '#options' => $bundles,
+//    '#default_value' => $default_bundle,
+//  );
+//
+//  if (count($bundles) <= 1) {
+//    $form['bundle']['#type'] = 'value';
+//    $form['bundle']['#value'] = $default_bundle;
+//  }else{
+//    $form['bundle']['#ajax'] = array(
+//      'event' => 'change',
+//      'wrapper' => 'preset-wrapper',
+//      'callback' => 'vsite_register_ajax_avalible_presets',
+//      'method' => 'replace',
+//    );
+//  }
+//
+//  $selected_bundle = isset($state['values']['bundle']) ? $state['values']['bundle'] : $default_bundle;
+//
+//  //Get enabled presets and load their titles
+//  $enabled_presets = array_filter(variable_get('os_enabled_spaces_presets', array()));
+//  $presets = spaces_preset_load();
+//  foreach($enabled_presets as $key => $value) {
+//    $enabled_presets[$key] = $presets[$key]->title;
+//    //Remove presets that don't go with this bundle
+//    if(isset($presets[$key]->value['bundles']) && !in_array($selected_bundle, $presets[$key]->value['bundles'])){
+//     unset($enabled_presets[$key]);
+//    }
+//  }
+//  $default_preset = variable_get('spaces_preset_og', 'os_scholar');
+//
+//  $form['preset'] = array(
+//    '#prefix' => '<div id="preset-wrapper">',
+//    '#suffix' => '</div>',
+//    '#title' => t('Initial Setup'),
+//    '#type' => 'select',
+//    '#required' => TRUE,
+//    '#options' => $enabled_presets,
+//    '#default_value' => (isset($enabled_presets[$default_preset])) ? $default_preset : current(array_keys($enabled_presets)),
+//  );
+//
+//  if (count($enabled_presets) <= 1) {
+//    $form['preset']['#type'] = 'value';
+//    $form['preset']['#value'] = $form['preset']['#default_value'];
+//  }
+//
+//  $form['vsite_private'] = array(
+//    '#title' => t('Private Site'),
+//    '#type' => 'checkbox',
+//    '#default_value' => FALSE,
+//    '#description' => t('Make your site private.  It won\'t be visible to anyone but you and won\'t be indexed by Google until you make it public.')
+//  );
+//
+//
+//  if ($anonymous) {
+//    //anonymous users always create new accounts
+//    $form += _vsite_register_user_form();
+//    $form['vicarious_user'] = array(
+//      '#type' => 'hidden',
+//    	'#value' => FALSE,
+//    );
+//    //flag for JS to set when create new user is clicked
+//    $form['user_fieldset']['create_new_user'] = array(
+//      '#type' => 'hidden',
+//      '#default_value' => TRUE,
+//    );
+//
+//  } elseif($manager) {
+//    //managers can create a new site, give a site to another user, or give a site to a new account.
+//    $form['vicarious_user'] = array(
+//      '#type' => 'checkbox',
+//    	'#title' => t('Create this OS Site on behalf of another user.'),
+//    );
+//
+//    $form['user_fieldset'] = array(
+//      '#type' => 'fieldset',
+//      '#collapsible' => FALSE,
+//    	'#states' => array('visible' => array(':input[name="vicarious_user"]' => array('checked' => TRUE))),
+//    );
+//
+//    //$ajax_link = l(t('create a new user'), 'javascript:void(0)', array('attributes'=>array('id'=>array('new-user-link'))));
+//    $ajax_link = '<a href="javascript:void(0)" id="new-user-link">' . t('create a new user') . '</a>'; //figure out l() later
+//
+//    $form['user_fieldset']['existing_username'] = array(
+//      '#type' => 'textfield',
+//    	'#title' => t('Find Existing User'),
+//      '#description' => t('Enter the name of the user who will manage this new site or !create_new.',
+//        array('!create_new' => $ajax_link)
+//      ),
+//    	'#autocomplete_path' => 'vsite/autocomplete/user',
+//    );
+//
+//    //flag for JS to set when create new user is clicked
+//    $form['user_fieldset']['create_new_user'] = array(
+//      '#type' => 'hidden',
+//      '#default_value' => FALSE,
+//    );
+//
+//    $form['user_fieldset']['new_user_div'] = array(
+//      '#markup' => '<div id="new_user_div">',
+//    );
+//
+//    $form['user_fieldset'] += _vsite_register_user_form();
+//
+//    $form['user_fieldset']['huid'] = array();
+//
+//    $form['user_fieldset']['new_user_close_div'] = array(
+//      '#markup' => '</div>',
+//    );
+//
+//  } else {
+//    //regular users can only create sites for themselves.
+//    $form['vicarious_user'] = array(
+//      '#type' => 'value',
+//      '#value' => FALSE,
+//    );
+//  }
+  
+    // clear any drupal_messages. Ajax takes care of them
+  $form['#prefix'] = '<div id = "user_register">';
+  $form['#suffix'] = '</div>';  
+  
+   $form['site_type'] = array(
+    '#type' => 'radios',
+    '#title' => t('Type of Site'),
+    '#description' => t('Choose whether you would like to use our site building software or build your own site from scratch.'),
+    '#default_value' => 1,
+    '#options' => array(
+      1 => t('I want to use the tools available through the site builder and have the UC Merced brand'),
+      0 => t('I will build my own site on my local machine and just upload it')
     ),
-    '#field_suffix' => theme('vsite_register_form_errors', array('name'=>'domain')),
-    '#attached' => array('js' => array(drupal_get_path('module', 'vsite_register') . '/vsite_register.js')),
-  );
-
-  $group_types = og_get_all_group_bundle();
-  $default_bundle = variable_get('os_default_group_bundle', 'personal');
-  $bundles = array();
-  foreach ($group_types['node'] as $bundle => $label) {
-    if (user_access("create {$bundle} content") && (!isset($parent) || in_array($bundle, variable_get('subsite_bundles',array('personal', 'project'))))) {
-      $bundles[$bundle] = $label;
-    }
-  }
-  if(!isset($bundles[$default_bundle])){
-    $default_bundle = current($bundles);
-  }
-
-  $form['bundle'] = array(
-    '#title' => t('Type of site'),
-    '#type' => 'select',
-    '#required' => TRUE,
-    '#options' => $bundles,
-    '#default_value' => $default_bundle,
-  );
-
-  if (count($bundles) <= 1) {
-    $form['bundle']['#type'] = 'value';
-    $form['bundle']['#value'] = $default_bundle;
-  }else{
-    $form['bundle']['#ajax'] = array(
-      'event' => 'change',
-      'wrapper' => 'preset-wrapper',
-      'callback' => 'vsite_register_ajax_avalible_presets',
-      'method' => 'replace',
-    );
-  }
-
-  $selected_bundle = isset($state['values']['bundle']) ? $state['values']['bundle'] : $default_bundle;
-
-  //Get enabled presets and load their titles
-  $enabled_presets = array_filter(variable_get('os_enabled_spaces_presets', array()));
-  $presets = spaces_preset_load();
-  foreach($enabled_presets as $key => $value) {
-    $enabled_presets[$key] = $presets[$key]->title;
-    //Remove presets that don't go with this bundle
-    if(isset($presets[$key]->value['bundles']) && !in_array($selected_bundle, $presets[$key]->value['bundles'])){
-     unset($enabled_presets[$key]);
-    }
-  }
-  $default_preset = variable_get('spaces_preset_og', 'os_scholar');
-
-  $form['preset'] = array(
-    '#prefix' => '<div id="preset-wrapper">',
+    '#prefix' => '<div id="site-type-item">',
     '#suffix' => '</div>',
-    '#title' => t('Initial Setup'),
-    '#type' => 'select',
-    '#required' => TRUE,
-    '#options' => $enabled_presets,
-    '#default_value' => (isset($enabled_presets[$default_preset])) ? $default_preset : current(array_keys($enabled_presets)),
   );
-
-  if (count($enabled_presets) <= 1) {
-    $form['preset']['#type'] = 'value';
-    $form['preset']['#value'] = $form['preset']['#default_value'];
-  }
-
-  $form['vsite_private'] = array(
-    '#title' => t('Private Site'),
-    '#type' => 'checkbox',
-    '#default_value' => FALSE,
-    '#description' => t('Make your site private.  It won\'t be visible to anyone but you and won\'t be indexed by Google until you make it public.')
+   
+  $form['site_type_description_js'] = array(
+    '#value' => "<script type='text/javascript'>$(document).ready(function() {
+      if ($('#edit-site-type-1:checked')) {
+        $('#site-type-description-site-builder').show();
+        $('#site-type-description-self-hosted').hide();
+      }
+      else {
+        $('#site-type-description-site-builder').hide();
+        $('#site-type-description-self-hosted').show();
+      }
+      
+      $('#edit-site-type-1').click(function() {
+        $('#site-type-description-site-builder').show();
+        $('#site-type-description-self-hosted').hide();
+      });
+      
+      $('#edit-site-type-0').click(function() {
+        $('#site-type-description-site-builder').hide();
+        $('#site-type-description-self-hosted').show();
+      });
+    });</script>"
   );
-
-
-  if ($anonymous) {
-    //anonymous users always create new accounts
-    $form += _vsite_register_user_form();
-    $form['vicarious_user'] = array(
-      '#type' => 'hidden',
-    	'#value' => FALSE,
-    );
-    //flag for JS to set when create new user is clicked
-    $form['user_fieldset']['create_new_user'] = array(
-      '#type' => 'hidden',
-      '#default_value' => TRUE,
-    );
-
-  } elseif($manager) {
-    //managers can create a new site, give a site to another user, or give a site to a new account.
-    $form['vicarious_user'] = array(
-      '#type' => 'checkbox',
-    	'#title' => t('Create this OS Site on behalf of another user.'),
-    );
-
-    $form['user_fieldset'] = array(
-      '#type' => 'fieldset',
-      '#collapsible' => FALSE,
-    	'#states' => array('visible' => array(':input[name="vicarious_user"]' => array('checked' => TRUE))),
-    );
-
-    //$ajax_link = l(t('create a new user'), 'javascript:void(0)', array('attributes'=>array('id'=>array('new-user-link'))));
-    $ajax_link = '<a href="javascript:void(0)" id="new-user-link">' . t('create a new user') . '</a>'; //figure out l() later
-
-    $form['user_fieldset']['existing_username'] = array(
-      '#type' => 'textfield',
-    	'#title' => t('Find Existing User'),
-      '#description' => t('Enter the name of the user who will manage this new site or !create_new.',
-        array('!create_new' => $ajax_link)
-      ),
-    	'#autocomplete_path' => 'vsite/autocomplete/user',
-    );
-
-    //flag for JS to set when create new user is clicked
-    $form['user_fieldset']['create_new_user'] = array(
-      '#type' => 'hidden',
-      '#default_value' => FALSE,
-    );
-
-    $form['user_fieldset']['new_user_div'] = array(
-      '#markup' => '<div id="new_user_div">',
-    );
-
-    $form['user_fieldset'] += _vsite_register_user_form();
-
-    $form['user_fieldset']['huid'] = array();
-
-    $form['user_fieldset']['new_user_close_div'] = array(
-      '#markup' => '</div>',
-    );
-
-  } else {
-    //regular users can only create sites for themselves.
-    $form['vicarious_user'] = array(
-      '#type' => 'value',
-      '#value' => FALSE,
-    );
-  }
-
+   
+  $form['site_type_description_site_builder'] = array(
+    '#value' => '<div id="site-type-description-site-builder"><p>' . t('Easiest way to build your web site, using all the great tools in the system.') . '</p></div>',
+  );
+  
+  $form['site_type_description_self_hosted'] = array(
+    '#value' => '<div id="site-type-description-self-hosted"><p>' . t('Your site will be blank and you will need to create your own web site and upload the files using an sftp client.') . '</p></div>',
+  );
+  
   $form['submit'] = array(
     '#type' => 'submit',
     '#value' => t('Create your site'),
