@@ -220,7 +220,7 @@ function ucm_register_site_switch_form_submit($form, &$form_state) {
 
 // Set its management status
 function ucm_register_set_manage($name, $status, $process) {
-  if (db_result(db_query("SELECT `name` FROM {vsite_managed} WHERE `name` = '%s'", $name)) !== FALSE) {
+  if (db_query("SELECT `name` FROM {vsite_managed} WHERE `name` = '%s'", $name)) {
     db_query("UPDATE {vsite_managed} SET `status` = %d, `process` = %d WHERE `name` = '%s'", $status, $process, $name);
   }
   // otherwise insert a new record
