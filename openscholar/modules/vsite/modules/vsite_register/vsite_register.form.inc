@@ -74,7 +74,7 @@ function vsite_register_form($form, &$state) {
     '#attributes' => array('class' => array('use-ajax-submit') ),
     '#ajax' => array('callback' => 'vsite_register_form_submit'),
   );
-
+  die(var_dump($form));
   return $form;
 
 }
@@ -129,8 +129,6 @@ function _vsite_register_user_form() {
     '#title' => t('Send email notification of this account.'),
   );
   */
-  var_dump($form);
-  die("<br/>Form Contents");
   return $form;
 }
 
