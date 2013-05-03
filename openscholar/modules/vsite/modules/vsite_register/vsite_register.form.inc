@@ -129,7 +129,7 @@ function _vsite_register_user_form() {
     '#title' => t('Send email notification of this account.'),
   );
   */
-    var_dump($form);
+  var_dump($form);
   die("<br/>Form Contents");
   return $form;
 }
