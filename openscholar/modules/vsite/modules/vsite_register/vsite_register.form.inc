@@ -34,7 +34,7 @@ function vsite_register_form($form, &$state) {
     '#suffix' => '</div>',
   );
    
-  $form['user'] = array(
+  $form['domain'] = array(
     '#type' => 'hidden',
     '#value' => $user->name,
   ); 
@@ -113,7 +113,7 @@ function _vsite_register_user_form() {
  * Creates user and vsite when site/register form is submitted
  */
 function vsite_register_form_submit(&$form, &$state) {
-  die("<pre>" . print_r($form, 1) . "</pre><br/>I am in the form_submit function.");
+  //die("<pre>" . print_r($form, 1) . "</pre><br/>I am in the form_submit function.");
   ctools_include('user', 'os');
   ctools_include('vsite', 'vsite');
   $values = $state['values'];
@@ -334,7 +334,7 @@ function vsite_register_validate_elements($values) {
  * @return string listing all errors with form element.  Null if no errors.
  */
 function _vsite_register_validate($element, &$values) {
-die("ELEMENT:<br/><pre>".print_r($element, 1)."</pre><br/><br/>VALUES:<br/><pre>".print_r($values,1)."</pre>");
+//die("ELEMENT:<br/><pre>".print_r($element, 1)."</pre><br/><br/>VALUES:<br/><pre>".print_r($values,1)."</pre>");
     $msg = array();
   switch($element) {
 
