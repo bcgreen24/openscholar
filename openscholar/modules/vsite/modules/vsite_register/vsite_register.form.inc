@@ -123,11 +123,10 @@ function _vsite_register_user_form() {
  * Creates user and vsite when site/register form is submitted
  */
 function vsite_register_form_submit(&$form, &$state) {
-  //die("<pre>" . print_r($form, 1) . "</pre><br/>I am in the form_submit function.");
   ctools_include('user', 'os');
   ctools_include('vsite', 'vsite');
   $values = $state['values'];
-
+die("<pre>" . print_r($values, 1) . "</pre><br/>");
   if ($values['vicarious_user'] && $values['existing_username']) {
     //user account already exists
     $site_owner = user_load_by_name($values['existing_username']);
@@ -344,7 +343,7 @@ function vsite_register_validate_elements($values) {
  * @return string listing all errors with form element.  Null if no errors.
  */
 function _vsite_register_validate($element, &$values) {
-die("ELEMENT:<br/><pre>".print_r($element, 1)."</pre><br/><br/>VALUES:<br/><pre>".print_r($values,1)."</pre>");
+//die("ELEMENT:<br/><pre>".print_r($element, 1)."</pre><br/><br/>VALUES:<br/><pre>".print_r($values,1)."</pre>");
     $msg = array();
   switch($element) {
 
