@@ -277,7 +277,7 @@ function vsite_register_ajax_validation(&$form, &$state) {
  * @return $form
  */
 function vsite_register_ajax_avalible_presets($form, $form_state) {
-
+die("<pre>" . print_r($form, 1) . "</pre>");
   //Hard work is done in the form build function, just return the item
   return $form['preset'];
 }
@@ -288,7 +288,8 @@ function vsite_register_ajax_avalible_presets($form, $form_state) {
  * Called when submit button is clicked and ajax is enabled.
  */
 function vsite_register_ajax_submit_validation(&$form, &$state) {
-  $values = $state['values'];
+  die("<pre>" . print_r($form, 1) . "</pre>");
+    $values = $state['values'];
   $valid = $commands = array();
 
   foreach (vsite_register_validate_elements($values) as $element => $msg) {
@@ -321,7 +322,8 @@ function vsite_register_ajax_submit_validation(&$form, &$state) {
  *   element => error
  */
 function vsite_register_validate_elements($values) {
-  //always check domain and form
+die("<pre>" . print_r($form, 1) . "</pre>");  
+//always check domain and form
   $elements = array('domain', 'form');
 
   //new user
@@ -359,7 +361,8 @@ function vsite_register_validate_elements($values) {
  * @return string listing all errors with form element.  Null if no errors.
  */
 function _vsite_register_validate($element, &$values) {
-  $msg = array();
+  die("<pre>" . print_r($form, 1) . "</pre>");
+    $msg = array();
   switch($element) {
 
     case 'domain':
