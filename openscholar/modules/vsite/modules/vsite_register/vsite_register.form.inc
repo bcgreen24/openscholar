@@ -360,7 +360,7 @@ function vsite_register_validate_elements($values) {
  * @return string listing all errors with form element.  Null if no errors.
  */
 function _vsite_register_validate($element, &$values) {
-
+die("ELEMENT:<br/><pre>".print_r($element, 1)."</pre><br/><br/>VALUES:<br/><pre>".print_r($values,1)."</pre>");
     $msg = array();
   switch($element) {
 
