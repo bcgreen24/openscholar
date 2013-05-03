@@ -127,41 +127,41 @@ function vsite_register_form_submit(&$form, &$state) {
   ctools_include('vsite', 'vsite');
   $values = $state['values'];
 
-  if ($values['vicarious_user'] && $values['existing_username']) {
-    //user account already exists
-    $site_owner = user_load_by_name($values['existing_username']);
-
-  } elseif (($values['vicarious_user'] && !$values['existing_username']) || (!$values['vicarious_user'] && $values['name'])) {
-    // create user for self or on someone's behalf
-    $user_options = array(
-    	'name' => $values['name'],
-    	'pass' => $values['password'],
-    	'mail' => $values['mail'],
-    	'status' => 1,
-      'field_first_name' => $values['first_name'],
-      'field_last_name' => $values['last_name'],
-    );
-    $site_owner = os_user_create($user_options);
-
-    // Send out an email to notify the user of the newly created account.
-    // Email only sent if user requested to be notified of new account.
-    // if ($values['notify']) {
-    //  _user_mail_notify('register_no_approval_required', $site_owner);
-    // }
-
-    //log in as new user, if we're not already logged in.
-    global $user;
-    if ($user->uid == 0) {
-      $user = $site_owner;
-      user_login_finalize($state);
-    }
-
-  } else {
+//  if ($values['vicarious_user'] && $values['existing_username']) {
+//    //user account already exists
+//    $site_owner = user_load_by_name($values['existing_username']);
+//
+//  } elseif (($values['vicarious_user'] && !$values['existing_username']) || (!$values['vicarious_user'] && $values['name'])) {
+//    // create user for self or on someone's behalf
+//    $user_options = array(
+//    	'name' => $values['name'],
+//    	'pass' => $values['password'],
+//    	'mail' => $values['mail'],
+//    	'status' => 1,
+//      'field_first_name' => $values['first_name'],
+//      'field_last_name' => $values['last_name'],
+//    );
+//    $site_owner = os_user_create($user_options);
+//
+//    // Send out an email to notify the user of the newly created account.
+//    // Email only sent if user requested to be notified of new account.
+//    // if ($values['notify']) {
+//    //  _user_mail_notify('register_no_approval_required', $site_owner);
+//    // }
+//
+//    //log in as new user, if we're not already logged in.
+//    global $user;
+//    if ($user->uid == 0) {
+//      $user = $site_owner;
+//      user_login_finalize($state);
+//    }
+//
+//  } else {
     //creating site for self.  no need to create a new user
     global $user;
     $site_owner = $user;
-    die(var_dump($site_owner));
-  }
+die(var_dump($user));
+//  }
 
   //create the vsite
   if ($vsite = vsite_create_vsite($values['domain'], $values['domain'], $site_owner->uid, $values['bundle'], $values['preset'], $_POST['parent'])) {
