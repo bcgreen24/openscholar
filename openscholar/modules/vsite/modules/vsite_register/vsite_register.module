@@ -25,7 +25,7 @@ function vsite_register_menu() {
     'access arguments' => array('access administration pages'),
     //'type' => MENU_LOCAL_TASK,
   );
-  die("Die");
+  die("died");
   return $items;
 }
 
