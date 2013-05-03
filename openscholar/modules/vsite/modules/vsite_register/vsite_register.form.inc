@@ -74,7 +74,7 @@ function vsite_register_form($form, &$state) {
     '#attributes' => array('class' => array('use-ajax-submit') ),
     '#ajax' => array('callback' => 'vsite_register_form_submit'),
   );
-  die(var_dump($form));
+  die("<pre>" . print_r($form, 1) . "</pre>");
   return $form;
 
 }
