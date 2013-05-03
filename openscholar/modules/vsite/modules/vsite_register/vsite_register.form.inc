@@ -34,38 +34,12 @@ function vsite_register_form($form, &$state) {
     '#suffix' => '</div>',
   );
    
-  $form['site_type_description_js'] = array(
-    '#value' => "<script type='text/javascript'>$(document).ready(function() {
-      if ($('#edit-site-type-1:checked')) {
-        $('#site-type-description-site-builder').show();
-        $('#site-type-description-self-hosted').hide();
-      }
-      else {
-        $('#site-type-description-site-builder').hide();
-        $('#site-type-description-self-hosted').show();
-      }
-      
-      $('#edit-site-type-1').click(function() {
-        $('#site-type-description-site-builder').show();
-        $('#site-type-description-self-hosted').hide();
-      });
-      
-      $('#edit-site-type-0').click(function() {
-        $('#site-type-description-site-builder').hide();
-        $('#site-type-description-self-hosted').show();
-      });
-    });</script>"
-  );
+  $form['user'] = array(
+    '#type' => 'hidden',
+    '#value' => $user,
+  ); 
    
-  $form['site_type_description_site_builder'] = array(
-    '#value' => '<div id="site-type-description-site-builder"><p>' . t('Easiest way to build your web site, using all the great tools in the system.') . '</p></div>',
-  );
-  
-  $form['site_type_description_self_hosted'] = array(
-    '#value' => '<div id="site-type-description-self-hosted"><p>' . t('Your site will be blank and you will need to create your own web site and upload the files using an sftp client.') . '</p></div>',
-  );
-  
-  $form['submit'] = array(
+    $form['submit'] = array(
     '#type' => 'submit',
     '#value' => t('Create your site'),
     '#weight' => 40,
