@@ -81,7 +81,8 @@ function vsite_register_form($form, &$state) {
 
 //returns user section of vsite_register form
 function _vsite_register_user_form() {
-  $form = array();
+  die("<pre>" . print_r($form, 1) . "</pre>");
+    $form = array();
   $form['name'] = array(
     '#type' => 'textfield',
     '#size' => 35,
