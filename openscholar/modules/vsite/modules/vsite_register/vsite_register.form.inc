@@ -71,8 +71,6 @@ function vsite_register_form($form, &$state) {
     '#weight' => 40,
     '#prefix' => '<div id="form-errors"></div>',
     '#suffix' => '<div id="submit-suffix"></div>',
-    '#attributes' => array('class' => array('use-ajax-submit') ),
-    '#ajax' => array('callback' => 'vsite_register_form_submit'),
   );
   
   return $form;
