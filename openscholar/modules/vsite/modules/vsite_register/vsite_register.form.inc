@@ -79,7 +79,7 @@ function vsite_register_form($form, &$state) {
 
 //returns user section of vsite_register form
 function _vsite_register_user_form() {
-  die("<pre>" . print_r($form, 1) . "</pre>");
+
     $form = array();
   $form['name'] = array(
     '#type' => 'textfield',
@@ -139,7 +139,7 @@ function _vsite_register_user_form() {
  * Creates user and vsite when site/register form is submitted
  */
 function vsite_register_form_submit(&$form, &$state) {
-  die("<pre>" . print_r($form, 1) . "</pre>");
+  die("<pre>" . print_r($form, 1) . "</pre><br/>I am in the form_submit function.");
   ctools_include('user', 'os');
   ctools_include('vsite', 'vsite');
   $values = $state['values'];
@@ -225,7 +225,7 @@ function vsite_register_form_submit(&$form, &$state) {
  * Validation function for site/register form
  */
 function vsite_register_form_validate(&$form, &$state) {
-die("<pre>" . print_r($form, 1) . "</pre>");  
+
 //Ajax validation.
   if ($_GET['q'] == 'system/ajax') {
     if ($state['triggering_element']['#ajax']['callback'] == 'vsite_register_ajax_validation' ||
@@ -258,7 +258,7 @@ die("<pre>" . print_r($form, 1) . "</pre>");
  * Callback function for ajax.  returns errors on ajaxy elements
  */
 function vsite_register_ajax_validation(&$form, &$state) {
-  die("<pre>" . print_r($form, 1) . "</pre>");
+
   drupal_get_messages(); //clear this to avoid having notices clutter the form during ajax validation
   $elem = $state['triggering_element']['#name'];
   return theme('vsite_register_form_errors', (array(
@@ -276,7 +276,7 @@ function vsite_register_ajax_validation(&$form, &$state) {
  * @return $form
  */
 function vsite_register_ajax_avalible_presets($form, $form_state) {
-die("<pre>" . print_r($form, 1) . "</pre>");
+
   //Hard work is done in the form build function, just return the item
   return $form['preset'];
 }
@@ -287,7 +287,7 @@ die("<pre>" . print_r($form, 1) . "</pre>");
  * Called when submit button is clicked and ajax is enabled.
  */
 function vsite_register_ajax_submit_validation(&$form, &$state) {
-  die("<pre>" . print_r($form, 1) . "</pre>");
+
     $values = $state['values'];
   $valid = $commands = array();
 
@@ -321,7 +321,7 @@ function vsite_register_ajax_submit_validation(&$form, &$state) {
  *   element => error
  */
 function vsite_register_validate_elements($values) {
-die("<pre>" . print_r($form, 1) . "</pre>");  
+
 //always check domain and form
   $elements = array('domain', 'form');
 
@@ -360,7 +360,7 @@ die("<pre>" . print_r($form, 1) . "</pre>");
  * @return string listing all errors with form element.  Null if no errors.
  */
 function _vsite_register_validate($element, &$values) {
-  die("<pre>" . print_r($form, 1) . "</pre>");
+
     $msg = array();
   switch($element) {
 
