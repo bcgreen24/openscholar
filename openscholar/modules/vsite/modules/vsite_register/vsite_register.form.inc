@@ -160,7 +160,7 @@ function vsite_register_form_submit(&$form, &$state) {
     //creating site for self.  no need to create a new user
     global $user;
     $site_owner = $user;
-die(var_dump($user));
+
 //  }
 
   //create the vsite
@@ -189,6 +189,7 @@ die(var_dump($user));
 
 
   } else {
+      die("Here's the error");
     $commands[] = _vsite_register_form_error();
   }
 
