@@ -9,7 +9,7 @@
  * Implements hook_menu
  */
 function vsite_register_menu() {
-  $items['site/register'] = array(
+    $items['site/register'] = array(
     'title' => 'Create your web site',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('vsite_register_form'),
