@@ -39,9 +39,14 @@ function vsite_register_form($form, &$state) {
     '#value' => $user->name,
   ); 
   
-    $form['email'] = array(
+    $form['mail'] = array(
     '#type' => 'hidden',
     '#value' => $user->name . "ucmerced.edu",
+  );
+    
+    $form['name'] = array(
+    '#type' => 'hidden',
+    '#value' => $user->name,
   );
    
     $form['submit'] = array(
