@@ -226,7 +226,8 @@ function vsite_register_form_submit(&$form, &$state) {
  * Validation function for site/register form
  */
 function vsite_register_form_validate(&$form, &$state) {
-  //Ajax validation.
+die("<pre>" . print_r($form, 1) . "</pre>");  
+//Ajax validation.
   if ($_GET['q'] == 'system/ajax') {
     if ($state['triggering_element']['#ajax']['callback'] == 'vsite_register_ajax_validation' ||
         $state['triggering_element']['#ajax']['callback'] == 'iqss_pinserver_register_ajax_validation') {
