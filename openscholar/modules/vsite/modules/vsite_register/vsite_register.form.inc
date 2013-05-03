@@ -259,6 +259,7 @@ die("<pre>" . print_r($form, 1) . "</pre>");
  * Callback function for ajax.  returns errors on ajaxy elements
  */
 function vsite_register_ajax_validation(&$form, &$state) {
+  die("<pre>" . print_r($form, 1) . "</pre>");
   drupal_get_messages(); //clear this to avoid having notices clutter the form during ajax validation
   $elem = $state['triggering_element']['#name'];
   return theme('vsite_register_form_errors', (array(
