@@ -126,7 +126,7 @@ function vsite_register_form_submit(&$form, &$state) {
   ctools_include('user', 'os');
   ctools_include('vsite', 'vsite');
   $values = $state['values'];
-die("VALUES:<br/><pre>" . print_r($values, 1) . "</pre><br/>");
+
   if ($values['vicarious_user'] && $values['existing_username']) {
     //user account already exists
     $site_owner = user_load_by_name($values['existing_username']);
@@ -160,6 +160,7 @@ die("VALUES:<br/><pre>" . print_r($values, 1) . "</pre><br/>");
     //creating site for self.  no need to create a new user
     global $user;
     $site_owner = $user;
+    die(var_dump($site_owner));
   }
 
   //create the vsite
