@@ -36,7 +36,7 @@ function vsite_register_form($form, &$state) {
    
   $form['user'] = array(
     '#type' => 'hidden',
-    '#value' => $user,
+    '#value' => $user->name,
   ); 
    
     $form['submit'] = array(
