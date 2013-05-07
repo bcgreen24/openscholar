@@ -101,7 +101,7 @@ function cas_attributes_cas_user_presave(&$edit, $account) {
       $function = $module . '_cas_attributes_roles_modify';
       call_user_func_array($function, $arguments);
     }
-    die("<pre>" . print_r($function_list,1) . "</pre>");
+    die("function list:<br/><pre>" . print_r($function_list,1) . "</pre>");
     // Build all the attirbutes to check.
     $cas_user_roles = array();
     $attributes_to_check = explode("\n", $cas_attributes['roles']['mapping']);
