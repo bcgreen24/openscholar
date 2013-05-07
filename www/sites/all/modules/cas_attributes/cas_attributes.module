@@ -129,7 +129,11 @@ function cas_attributes_cas_user_presave(&$edit, $account) {
         }
       }
     }
-     //die("CAS user roles:<br/><pre>" . print_r($cas_user_roles,1) . "</pre>");
+    
+    
+    //*****LOOK AT THIS*******//
+    
+     die("CAS user roles:<br/><pre>" . print_r($cas_user_roles,1) . "</pre>");
     //RESULT:  empty array  
     
     // Loop through all the managed roles and see if the user has access to them
@@ -159,7 +163,7 @@ function cas_attributes_cas_user_presave(&$edit, $account) {
   
     foreach ($cas_attributes['roles']['manage'] as $rid) {
       if (!empty($rid)) {
-        //if (in_array($roles[$rid], $cas_user_roles)) {
+
           //die("roles->rid: " . $roles[$rid] . " user_att->edupersonaff: " . $user_attributes['eduPersonAffiliation']);
           //result: user_attributes->edupersonaffiliate is EMPTY
          //die("<pre>" . print_r($roles[$rid],1) . "<br/>" . $user_attributes['eduPersonAffiliation'] . "</pre>");
@@ -173,7 +177,9 @@ function cas_attributes_cas_user_presave(&$edit, $account) {
              $affils = $user_attributes['eduPersonAffiliation'];
          }
          //die(var_dump($affils));
-          if (in_array($roles[$rid], $affils)) {   
+         //
+         //if (in_array($roles[$rid], $cas_user_roles)) { 
+         if (in_array($roles[$rid], $affils)) {   
              //die("the role is in the array");
              $edit['roles'][$rid] = $roles[$rid];
         }
