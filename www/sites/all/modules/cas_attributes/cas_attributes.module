@@ -109,6 +109,8 @@ function cas_attributes_cas_user_presave(&$edit, $account) {
     
     
     $attributes_to_check = explode("\n", $cas_attributes['roles']['mapping']);
+    die("Atts to check:<br/><pre>" . print_r($attributes_to_check,1) . "</pre>");
+    //RESULT: 
     foreach ($attributes_to_check as $attribute) {
       if (!empty($user_attributes[$attribute])) {
         if (is_array($user_attributes[$attribute])) {
@@ -119,8 +121,8 @@ function cas_attributes_cas_user_presave(&$edit, $account) {
         }
       }
     }
-     die("CAS user rolse:<br/><pre>" . print_r($cas_user_roles,1) . "</pre>");
-    //RESULT:    
+     //die("CAS user roles:<br/><pre>" . print_r($cas_user_roles,1) . "</pre>");
+    //RESULT:  empty array  
     
     // Loop through all the managed roles and see if the user has access to them
     // and set accordingly.
