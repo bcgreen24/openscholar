@@ -168,11 +168,11 @@ function cas_attributes_cas_user_presave(&$edit, $account) {
           //RESULT: staff
           //die ("Type: " . gettype($user_attributes['eduPersonAffiliation']) . "<br/>Value: " . $user_attributes['eduPersonAffiliation'] );
          if (gettype($user_attributes['eduPersonAffiliation']) == 'string'){
-             $affils = explode( ',', $user_attributes['eduPersonAfffiliation']);
+             $affils = explode( ',', $user_attributes['eduPersonAffiliation']);
          }else{
              $affils = $user_attributes['eduPersonAffiliation'];
          }
-         die(var_dump($affils));
+         //die(var_dump($affils));
           if (in_array($roles[$rid], $affils)) {   
              die("the role is in the array");
              $edit['roles'][$rid] = $roles[$rid];
