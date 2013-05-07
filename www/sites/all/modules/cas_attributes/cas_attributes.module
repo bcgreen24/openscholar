@@ -135,7 +135,18 @@ function cas_attributes_cas_user_presave(&$edit, $account) {
     // Loop through all the managed roles and see if the user has access to them
     // and set accordingly.
     $roles = user_roles();
-    die("ROLES:<br/><br/><pre>" . print_r($roles, 1) . "</pre>");
+    //die("ROLES:<br/><br/><pre>" . print_r($roles, 1) . "</pre>");
+    //RESULT: Array
+//(
+//    [1] => anonymous user
+//    [2] => authenticated user
+//    [3] => administrator
+//    [4] => manager
+//    [5] => vsite admin
+//    [6] => faculty
+//    [7] => staff
+//)
+    die("<pre>" . print_r($cas_attributes['roles']['manage'], 1) . "</pre>");
     foreach ($cas_attributes['roles']['manage'] as $rid) {
       if (!empty($rid)) {
         if (in_array($roles[$rid], $cas_user_roles)) {
