@@ -36,7 +36,7 @@ function vsite_register_form($form, &$state) {
    
   $form['domain'] = array(
     '#type' => 'textfield',
-    '#value' => $user->name,
+    //'#value' => $user->name,
   ); 
   
     $form['mail'] = array(
