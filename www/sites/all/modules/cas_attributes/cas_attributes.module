@@ -166,7 +166,7 @@ function cas_attributes_cas_user_presave(&$edit, $account) {
           //RESULT: staff staff
           //die ($user_attributes['eduPersonAffiliation']);
           //RESULT: staff
-          die (gettype($user_attributes['eduPersonAffiliation']));
+          die ("Type: " . gettype($user_attributes['eduPersonAffiliation']) . "<br/>Value: " . $user_attributes['eduPersonAffiliation'] );
          if (in_array($roles[$rid], $user_attributes['eduPersonAffiliation'])) {   
              die("the role is in the array");
              $edit['roles'][$rid] = $roles[$rid];
