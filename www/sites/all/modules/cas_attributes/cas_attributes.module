@@ -160,7 +160,7 @@ function cas_attributes_cas_user_presave(&$edit, $account) {
     foreach ($cas_attributes['roles']['manage'] as $rid) {
       if (!empty($rid)) {
         //if (in_array($roles[$rid], $cas_user_roles)) {
-          die($roles[$rid] . " " . $user_attributes['edupersonaffiliate']);
+          die("roles->rid" . $roles[$rid] . " user_att->edupersonaff" . $user_attributes['edupersonaffiliate']);
          if (in_array($roles[$rid], $user_attributes['edupersonaffiliate'])) {   
           $edit['roles'][$rid] = $roles[$rid];
         }
