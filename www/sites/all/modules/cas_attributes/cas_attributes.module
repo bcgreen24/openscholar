@@ -97,7 +97,7 @@ function cas_attributes_cas_user_presave(&$edit, $account) {
     //RESULT: same as $user_attibutes
     
     foreach (module_implements('cas_attributes_roles_modify') as $module) {
-        //$function_list .= $module;
+      //$function_list .= $module;
       $function = $module . '_cas_attributes_roles_modify';
       call_user_func_array($function, $arguments);
     }
@@ -106,7 +106,8 @@ function cas_attributes_cas_user_presave(&$edit, $account) {
     
     // Build all the attirbutes to check.
     $cas_user_roles = array();
-    die("<pre>" . print_r($cas_user_roles,1) . "</pre>");
+    
+    
     $attributes_to_check = explode("\n", $cas_attributes['roles']['mapping']);
     foreach ($attributes_to_check as $attribute) {
       if (!empty($user_attributes[$attribute])) {
@@ -118,7 +119,9 @@ function cas_attributes_cas_user_presave(&$edit, $account) {
         }
       }
     }
-
+     die("<pre>" . print_r($cas_user_roles,1) . "</pre>");
+    //RESULT:    
+    
     // Loop through all the managed roles and see if the user has access to them
     // and set accordingly.
     $roles = user_roles();
