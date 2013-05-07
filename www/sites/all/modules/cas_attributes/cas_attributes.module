@@ -164,7 +164,9 @@ function cas_attributes_cas_user_presave(&$edit, $account) {
           //result: user_attributes->edupersonaffiliate is EMPTY
          //die("<pre>" . print_r($roles[$rid],1) . "<br/>" . $user_attributes['eduPersonAffiliation'] . "</pre>");
           //RESULT: staff staff
-          die ($user_attributes['eduPersonAffiliation']);
+          //die ($user_attributes['eduPersonAffiliation']);
+          //RESULT: staff
+          die ($user_attributes);
          if (in_array($roles[$rid], $user_attributes['eduPersonAffiliation'])) {   
              die("the role is in the array");
              $edit['roles'][$rid] = $roles[$rid];
