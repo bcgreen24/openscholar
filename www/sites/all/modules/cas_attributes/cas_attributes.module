@@ -93,12 +93,15 @@ function cas_attributes_cas_user_presave(&$edit, $account) {
     // Allow other modules to manipulate the attribute values.
     // Can't use module_invoke_all() because we need to pass byref.
     $arguments = array(&$user_attributes);
-    die("<pre>" . print_r($arguments,1) . "</pre>");
+    //die("<pre>" . print_r($arguments,1) . "</pre>");
+    //RESULT: same as $user_attibutes
+    
     foreach (module_implements('cas_attributes_roles_modify') as $module) {
+        $function_list .= $module;
       $function = $module . '_cas_attributes_roles_modify';
       call_user_func_array($function, $arguments);
     }
-
+    die("<pre>" . print_r($function_list,1) . "</pre>");
     // Build all the attirbutes to check.
     $cas_user_roles = array();
     $attributes_to_check = explode("\n", $cas_attributes['roles']['mapping']);
