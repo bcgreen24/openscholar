@@ -83,6 +83,7 @@ function cas_attributes_cas_user_presave(&$edit, $account) {
   // Make sure there are attributes to check.
   if (!empty($cas_attributes['roles']['mapping'])) {
     // Get the users attributes.
+      die($cas_attributes['roles']['mapping']);
     $user_attributes = cas_phpcas_attributes($data['cas']);
     // Allow other modules to manipulate the attribute values.
     // Can't use module_invoke_all() because we need to pass byref.
