@@ -119,7 +119,7 @@ function cas_attributes_cas_user_presave(&$edit, $account) {
         }
       }
     }
-     die("<pre>" . print_r($cas_user_roles,1) . "</pre>");
+     die("CAS user rolse:<br/><pre>" . print_r($cas_user_roles,1) . "</pre>");
     //RESULT:    
     
     // Loop through all the managed roles and see if the user has access to them
