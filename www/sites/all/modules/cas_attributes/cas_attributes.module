@@ -114,7 +114,7 @@ function cas_attributes_cas_user_presave(&$edit, $account) {
     //die("Atts to check:<br/><pre>" . print_r($attributes_to_check,1) . "</pre>");
     //RESULT: 0=>eduPersonAffiliation, 1=>empty
     //$attributes_to_check[0] = eduPersonAffiliation
-    die(var_dump($user_attributes) . "<br/>" . var_dump($attributes_to_check));
+    //die(var_dump($user_attributes) . "<br/><br/>" . var_dump($attributes_to_check));
     foreach ($attributes_to_check as $attribute) {
         //die (var_dump($user_attributes[$attribute]));
         if (!empty($user_attributes[$attribute])) {
