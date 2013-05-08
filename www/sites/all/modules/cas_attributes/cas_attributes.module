@@ -178,6 +178,7 @@ function cas_attributes_cas_user_presave(&$edit, $account) {
 //         }
          //die(var_dump($affils));
          //
+          die(var_dump($cas_user_roles));
          if (in_array($roles[$rid], $cas_user_roles)) { 
          //if (in_array($roles[$rid], $affils)) {   
              //die("the role is in the array");
