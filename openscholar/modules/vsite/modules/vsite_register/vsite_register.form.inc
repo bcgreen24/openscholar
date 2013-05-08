@@ -25,10 +25,10 @@ function vsite_register_form($form, &$state) {
     '#type' => 'radios',
     '#title' => t('Type of Site'),
     '#description' => t('Choose whether you would like to use our site building software or build your own site from scratch.'),
-    '#default_value' => 1,
+    '#default_value' => 0,
     '#options' => array(
-      1 => t('I want to use the tools available through the site builder and have the UC Merced brand'),
-      0 => t('I will build my own site on my local machine and just upload it')
+      0 => t('I want to use the tools available through the site builder and have the UC Merced brand'),
+      1 => t('I will build my own site on my local machine and just upload it')
     ),
     '#prefix' => '<div id="site-type-item">',
     '#suffix' => '</div>',
@@ -126,7 +126,7 @@ function vsite_register_form_submit(&$form, &$state) {
   ctools_include('user', 'os');
   ctools_include('vsite', 'vsite');
   $values = $state['values'];
-die(var_dump($values));
+//die(var_dump($values));
 //  if ($values['vicarious_user'] && $values['existing_username']) {
 //    //user account already exists
 //    $site_owner = user_load_by_name($values['existing_username']);
@@ -164,7 +164,11 @@ die(var_dump($values));
 //  }
 
   //create the vsite
-  if ($vsite = vsite_create_vsite($values['domain'], $values['domain'], $site_owner->uid)) {
+    
+    if($values['site_type'] == '1'){
+        die("You have chosen to create an FTP site");
+    }else{
+         if ($vsite = vsite_create_vsite($values['domain'], $values['domain'], $site_owner->uid)) {
  
 //add user to vsite
     module_load_include('inc', 'vsite', 'includes/user');
@@ -201,7 +205,11 @@ die(var_dump($values));
     }
   }
   print ajax_render($commands);
-  exit;
+  exit; 
+    }
+    
+    
+
 }
 
 
