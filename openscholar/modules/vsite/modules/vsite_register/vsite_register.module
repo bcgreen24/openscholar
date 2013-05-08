@@ -56,7 +56,7 @@ function vsite_register_block_view($delta = '') {
         $content = l(t('Create your site'), 'site/register', array());
 
       } elseif (isset($vsites) && user_is_logged_in()) {
-        if (count($vsites) > 1) {
+        if (count($vsites) > 0) {
           $content = l(t('Go to your sites'), 'user');
         } else {
           $content = l(t('Go to your site'), $vsites[0]->og->purl);
