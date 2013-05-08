@@ -112,13 +112,12 @@ function cas_attributes_cas_user_presave(&$edit, $account) {
     
     $attributes_to_check = explode("\n", $cas_attributes['roles']['mapping']);
     die("Atts to check:<br/><pre>" . print_r($attributes_to_check,1) . "</pre>");
-    //RESULT: 0=>edpersonaffiliation, 1=>empty
+    //RESULT: 0=>eduPersonAffiliation, 1=>empty
     //$attributes_to_check[0] = edupersonaffiliation
     //die(var_dump($user_attributes));
     foreach ($attributes_to_check as $attribute) {
         
-        //if (!empty($user_attributes[$attribute])) {
-        if ($attribute != null) {
+        if (!empty($user_attributes[$attribute])) {
          // die("user attribute<br/><br/><pre>" . print_r($attribute,1) . "</pre>");
           //RESULT:edupersonaffiliation
           
