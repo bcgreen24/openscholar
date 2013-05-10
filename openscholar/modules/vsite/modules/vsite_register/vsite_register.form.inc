@@ -167,6 +167,8 @@ function vsite_register_form_submit(&$form, &$state) {
     
     if($values['site_type'] == '1'){
         die("You have chosen to create an FTP site");
+        //add line to apache aliases file
+        
     }else{
          if ($vsite = vsite_create_vsite($values['domain'], $values['domain'], $site_owner->uid)) {
  

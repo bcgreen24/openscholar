@@ -26,6 +26,7 @@ body {
 
 #header-container {
 	padding: 0 10px 10px;
+        background-image: url('/files/os_header.png');
 }
 
 
